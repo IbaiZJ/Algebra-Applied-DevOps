@@ -3,51 +3,36 @@
 ### 2.1. Functional requirements
 #### Patients
 - **FR-01** - A receptionist or administrator can register a new patient by entering basic information (first name, last name, date of birth, contact details).
-
-- **FR-02** - Authorised staff can search for patients by name and view a patient's details.
-
-- **FR-03** - A receptionist or administrator can edit a patient's information.
-
-- **FR-04** - A receptionist or administrator can deactivate a patient record. Deactivation does not delete the record, and the patient's past appointments remain available.
+- **FR-02** - Receptionists and administrators can search for patients by name and view their administrative details (name, date of birth and contact details). Clinical information is governed by FR-15 and FR-16.
+- **FR-03** - A receptionist or administrator can edit a patient's administrative information (name, date of birth and contact details).
+- **FR-04** - A receptionist or administrator can deactivate a patient record. A deactivated patient cannot be selected for a new appointment; deactivation does not delete the patient record, past appointments or medical records.
 
 #### Doctors
 - **FR-05** - An administrator can register a doctor with name and specialisation.
-
-- **FR-06** - Authorised staff can view the list of doctors and their details.
-
+- **FR-06** - Receptionists, doctors and administrators can view the doctor list and each doctor's name, specialisation and availability.
 - **FR-07** - An administrator can update a doctor's details, including specialisation and availability.
-
-- **FR-08** - An administrator can deactivate a doctor. Past appointments and records linked to that doctor are preserved.
+- **FR-08** - An administrator can deactivate a doctor. A deactivated doctor cannot be selected for new appointments; past appointments and medical records linked to that doctor are preserved.
 
 #### Appointments
-- **FR-09** - A receptionist or administrator can create an appointment with patient, doctor, date, time and reason.
-
-- **FR-10** - Every appointment has a status: scheduled, completed or cancelled.
-
-- **FR-11** - The system rejects an appointment if the doctor already has an appointment at the same date and time (no double-booking) and explains why.
-
-- **FR-12** - A receptionist or administrator can update or cancel an appointment; a doctor can mark their own appointment as completed.
-
-- **FR-13** - Appointments can be listed and filtered by date and doctor. Doctors only see their own.
+- **FR-09** - A receptionist or administrator can create an appointment for an active patient with an active doctor, specifying the date, time and reason.
+- **FR-10** - A new appointment is assigned the `scheduled` status. An appointment can have one of three statuses: `scheduled`, `completed` or `cancelled`.
+- **FR-11** - The system rejects an appointment if that doctor already has another `scheduled` appointment at the same date and time, and explains the conflict. A `cancelled` appointment does not block the time slot.
+- **FR-12** - A receptionist or administrator can update or cancel a `scheduled` appointment. Only the doctor assigned to an appointment can mark it as `completed`.
+- **FR-13** - Receptionists and administrators can list and filter all appointments by date and doctor. Doctors can list and filter only appointments assigned to them.
 
 #### Medical records
-- **FR-14** - A doctor can record the visit date, diagnosis and notes for a patient after an appointment.
-
-- **FR-15** - Records are retained permanently and are readable by authorised staff only (see RBAC matrix).
-
-- **FR-16** - A doctor can read the previous records of patients they treat.
+- **FR-14** - The doctor assigned to a visit can create a medical record for that appointment, containing the visit date, diagnosis and notes. The record is linked to the patient, appointment and doctor.
+- **FR-15** - Medical records remain available when a patient or doctor is deactivated and are not deleted through routine user actions. They are retained permanently unless applicable data-protection or retention requirements require otherwise (see NFR-07). Receptionists and administrators cannot read diagnoses or visit notes.
+- **FR-16** - A doctor can read a patient's previous medical records only when the patient is linked to one of that doctor's `scheduled` or `completed` appointments.
 
 #### Authentication
 - **FR-17** - Users must log in with credentials before accessing any protected functionality.
-
-- **FR-18** - The system distinguishes three roles: receptionist, doctor, administrator.
-
-- **FR-19** - An administrator can create and deactivate user accounts, assign roles and reset passwords.
+- **FR-18** - The system supports exactly three staff roles: receptionist, doctor and administrator.
+- **FR-19** - An administrator can create and deactivate staff accounts, assign each account one of the three supported roles, and initiate a password-reset process.
 
 #### Access control and export
-- **FR-20** - Every operation is restricted according to the user's role.
-
-- **FR-21** - A doctor can export their authorised data as a CSV report.
+- **FR-20** - The system checks the user's role on every protected operation, including direct API requests, and denies operations the role is not permitted to perform.
+- **FR-21** - A doctor can export authorised patient data as a CSV report, limited to patients linked to that doctor's `scheduled` or `completed` appointments. Receptionists and administrators cannot use this export.
 
 ### 2.2. Non-Functional requirements
 
