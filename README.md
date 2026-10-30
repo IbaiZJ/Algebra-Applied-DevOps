@@ -1,4 +1,4 @@
-# Hospital Management - DevOps Project
+# Hospital Management
 
 This project is a hospital management application that centralizes information and day-to-day tasks. It aims to help organize patients, staff, and resources while making healthcare services more efficient.
 
